@@ -3,8 +3,8 @@
 # @name ToDo
 # @description Commandline ToDo Tool
 # @author Ralph Dittrich <kizetsu.rd@googlemail.com>
-# @version v0.1.2.28
-VERSION='v0.1.2.28'
+# @version v0.1.2.29
+VERSION='v0.1.2.29'
 REPOSITORY='https://github.com/kizetsu/todo-command'
 VERSIONFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/version.md'
 COREFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/ToDo.sh'
@@ -48,6 +48,10 @@ FUNCTIONS:
                                                 optional arguments: none
 
     register                                register this tool as bash command
+                                                required arguments: none
+                                                optional arguments: none
+
+    update                                  update this tool to the latest version
                                                 required arguments: none
                                                 optional arguments: none
 
@@ -655,9 +659,9 @@ function update {
         # check if wget or curl is installed and get version file
         # we prefer wget
         command -v wget > /dev/null 2>&1
-        chkwget = $?
+        chkwget=$?
         command -v curl > /dev/null 2>&1
-        chkcurl = $?
+        chkcurl=$?
         cd /tmp/
         if [ $chkwget -eq 0 ]; then
             # use wget
@@ -786,6 +790,9 @@ function ToDo {
             ;;
         register)
             register
+            ;;
+        update)
+            update
             ;;
         version)
             echo $VERSION

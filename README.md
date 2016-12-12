@@ -1,4 +1,6 @@
-`Usage (script) : ./ToDo.sh  {FUNCTION} [OPTIONS] [ARGUMENTS]
+<code>
+Usage (script) : ./ToDo.sh  {FUNCTION} [OPTIONS] [ARGUMENTS]
+
 Usage (command): Todo {FUNCTION} [OPTIONS] [ARGUMENTS]
 
                                             This Tool gives you a ToDo list on your command line. You are able to
@@ -65,4 +67,5 @@ ARGUMENTS:
 
     --description=(string)                  Value for description. If ticket argument is given, this will be ignored.
 
-    --comment=(string)                      Value for comment. If ticket argument is given, this will be ignored.`
+    --comment=(string)                      Value for comment. If ticket argument is given, this will be ignored.
+</code>

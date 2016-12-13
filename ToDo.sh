@@ -3,8 +3,8 @@
 # @name ToDo
 # @description Commandline ToDo Tool
 # @author Ralph Dittrich <kizetsu.rd@googlemail.com>
-# @version v0.1.2.30
-VERSION='v0.1.2.30'
+# @version v0.1.2.31
+VERSION='v0.1.2.31'
 REPOSITORY='https://github.com/kizetsu/todo-command'
 VERSIONFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/version.md'
 COREFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/ToDo.sh'
@@ -107,7 +107,7 @@ function getArguments {
                 OPTIONS[debug]=true
                 ;;
             --file=*)
-                tmpfilename="${p/--filename=/}"
+                tmpfilename="${p/--file=/}"
                 PARAMETERS[filename]="${tmpfilename/\"/}"
                 ;;
             --index=*)

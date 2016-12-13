@@ -3,8 +3,8 @@
 # @name ToDo
 # @description Commandline ToDo Tool
 # @author Ralph Dittrich <kizetsu.rd@googlemail.com>
-# @version v0.1.2.29
-VERSION='v0.1.2.29'
+# @version v0.1.2.30
+VERSION='v0.1.2.30'
 REPOSITORY='https://github.com/kizetsu/todo-command'
 VERSIONFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/version.md'
 COREFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/ToDo.sh'
@@ -58,12 +58,12 @@ FUNCTIONS:
     help                                    show this help
 
 OPTIONS:
-    --silent | -s                           Make modifications without asking
+    --silent | -S                           Make modifications without asking
 
     --debug  | -D                           Get full debug output.
 
 ARGUMENTS:
-    --filename=(string)                     (optional) Define an other list file. Absolute path is required.
+    --file=(string)                         (optional) Define an other list file. Absolute path is required.
 
     --index=(string)                        ticket number as index to edit or delete a specific ToDo list item
 
@@ -75,7 +75,7 @@ ARGUMENTS:
                                             E.g. "X:Testcustomer:#12345:my description:any comment"
 
     --status=(string)                       Value for status code. If ticket argument is given, this will be ignored.
-                                            possible Values:
+                                              possible Values:
                                                 X = Live
                                                 R = Ready (to go live)
                                                 W = Work in Progress
@@ -97,16 +97,16 @@ EOF
 function getArguments {
     for p in "$@"; do
         case "$p" in
-            --silent|-s)
+            --silent|-S)
                 OPTIONS[silent]=true
                 ;;
-            --verbose|-v)
+            --verbose|-V)
                 OPTIONS[verbose]=true
                 ;;
             --debug|-D)
                 OPTIONS[debug]=true
                 ;;
-            --filename=*)
+            --file=*)
                 tmpfilename="${p/--filename=/}"
                 PARAMETERS[filename]="${tmpfilename/\"/}"
                 ;;

@@ -3,8 +3,17 @@
 # @name ToDo
 # @description Commandline ToDo Tool
 # @author Ralph Dittrich <kizetsu.rd@googlemail.com>
-# @version v0.1.2.32
-VERSION='v0.1.2.32'
+# @version v0.1.2.33
+#
+# @Todo:
+#   add possibility to get lists by id (maybe own folder for all lists)
+#   -> in case of own folder: new --list command to get them
+#   -> or by second parameter as id
+#   add more sort parameters
+#   -> maybe we want to sort by customer or numerical by ticketnumber
+#   we cannot use getopts, so maybe an own function should support short parameters/opts with value
+#   
+VERSION='v0.1.2.33'
 REPOSITORY='https://github.com/kizetsu/todo-command'
 VERSIONFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/version.md'
 COREFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/ToDo.sh'
@@ -601,7 +610,7 @@ function register {
         # check if user is superuser
         command NET SESSION > /dev/null 2>&1
         if [ $? -eq 1 ]; then
-            echo "register must be run as superuser"
+            echo -e "\\033[1;31mregister must be run as superuser\\033[0m"
             exit 1
         fi
 
@@ -620,7 +629,7 @@ function register {
             elif  [ -f "${HOME}/.bashrc" ]; then
                 BASHFILE="${HOME}/.bashrc"
             else
-                echo "WARNING: could not find wether .bash_aliases nor .bashrc"
+                echo -e "\\033[1;31mWARNING: could not find wether .bash_aliases nor .bashrc\\033[0m"
                 echo "    paste the following line to your bash source file and restart your console:"
                 echo '    alias Todo="/bin/todo.sh"'
                 return 0
@@ -632,7 +641,7 @@ function register {
                 fi
                 echo 'alias Todo="/bin/todo.sh"' >> "${BASHFILE}"
             fi
-            echo "[ToDo List Tool] was successful registered"
+            echo -e "\\033[0;32m[ToDo List Tool] was successful registered\\033[0m"
             echo "INFO: please restart your console"
             echo ""
             echo "usage: Todo {FUNCTION} [OPTIONS] [ARGUMENTS]"
@@ -646,7 +655,7 @@ function update {
     # check if user is superuser
     command NET SESSION > /dev/null 2>&1
     if [ $? -eq 1 ]; then
-        echo "update must be run as superuser"
+        echo -e "\\033[1;31mupdate must be run as superuser\033[0m"
         exit 1
     fi
 
@@ -703,8 +712,10 @@ function update {
         tmpRemVer="${tmpRemVer//\./}"
         # check if remote version is higher then local
         if [[ $((10#${tmpRemVer#0})) -gt $((10#${tmpVer})) ]]; then
-            echo "found update"
+            echo ""
+            echo -e "\\033[0;32mfound update\\033[0m"
             echo "downloading update..."
+            echo ""
             if [ $chkwget -eq 0 ]; then
                 # use wget
                 command wget -O ToDo.sh "$COREFILE"
@@ -713,7 +724,7 @@ function update {
                 command curl -o ToDo.sh "$COREFILE"
             fi
         else
-            echo "[ToDo List Tool] is already the latest version"
+            echo -e "\\033[0;32m[ToDo List Tool] is already the latest version\\033[0m"
             return 0
         fi
 
@@ -733,7 +744,7 @@ function update {
             echo "Please try again"
             return 1
         else
-            echo "[ToDo List Tool] was successful registered"
+            echo -e "\\033[0;32m[ToDo List Tool] was successful updated\\033[0m"
             command rm '/tmp/ToDo.sh'
             return 0
         fi

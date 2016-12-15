@@ -3,7 +3,7 @@
 # @name ToDo
 # @description Commandline ToDo Tool
 # @author Ralph Dittrich <kizetsu.rd@googlemail.com>
-# @version v0.1.2.33
+# @version v0.1.2.34
 #
 # @Todo:
 #   add possibility to get lists by id (maybe own folder for all lists)
@@ -13,7 +13,7 @@
 #   -> maybe we want to sort by customer or numerical by ticketnumber
 #   we cannot use getopts, so maybe an own function should support short parameters/opts with value
 #   
-VERSION='v0.1.2.33'
+VERSION='v0.1.2.34'
 REPOSITORY='https://github.com/kizetsu/todo-command'
 VERSIONFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/version.md'
 COREFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/ToDo.sh'
@@ -89,6 +89,7 @@ ARGUMENTS:
                                                 R = Ready (to go live)
                                                 W = Work in Progress
                                                 O = Open
+                                                S = Support
                                                 D = Declined
 
     --customer=(string)                     Value for customer name. If ticket argument is given, this will be ignored.
@@ -191,6 +192,9 @@ function show {
                 ;;
             D|d)
                 STAT="\\033[1;35mDECLINED\\033[0m"
+                ;;
+            S|s)
+                STAT="\\033[1;35mSUPPORT\\033[0m\t"
                 ;;
         esac
         # get customer
@@ -499,6 +503,7 @@ function sort {
     declare -A WIP
     declare -A OPEN
     declare -A DECLINED
+    declare -A SUPPORT
 
     # check list file for given index
     while read line; do
@@ -535,6 +540,9 @@ function sort {
             D|d)
                 DECLINED["$TICK"]="$line"
                 ;;
+            S|s)
+                SUPPORT["$TICK"]="$line"
+                ;;
         esac
     done < "${PARAMETERS[filename]}"
 
@@ -549,16 +557,17 @@ function sort {
     # create empty list file
     command touch "${PARAMETERS[filename]}"
 
+    # START: walk through TICKETLIST and echo to file
     if [[ ${OPTIONS[debug]} == true ]];then
         debug "Status: Live"
     fi
-    # walk through TICKETLIST and echo to file
     for l in "${LIVE[@]}"; do
         if [[ ${OPTIONS[debug]} == true ]];then
             debug "   $l"
         fi
-        echo "$l" >> "${PARAMETERS[filename]}"
+        echo "$l" >> "${PARAMETERS[filename]}"  # LIVE
     done
+
     if [[ ${OPTIONS[debug]} == true ]];then
         debug "Status: Ready"
     fi
@@ -566,8 +575,9 @@ function sort {
         if [[ ${OPTIONS[debug]} == true ]];then
             debug "   $r"
         fi
-        echo "$r" >> "${PARAMETERS[filename]}"
+        echo "$r" >> "${PARAMETERS[filename]}"  # READY
     done
+
     if [[ ${OPTIONS[debug]} == true ]];then
         debug "Status: Work in Progress"
     fi
@@ -575,8 +585,9 @@ function sort {
         if [[ ${OPTIONS[debug]} == true ]];then
             debug "   $w"
         fi
-        echo "$w" >> "${PARAMETERS[filename]}"
+        echo "$w" >> "${PARAMETERS[filename]}"  # WIP
     done
+
     if [[ ${OPTIONS[debug]} == true ]];then
         debug "Status: Open"
     fi
@@ -584,8 +595,19 @@ function sort {
         if [[ ${OPTIONS[debug]} == true ]];then
             debug "   $o"
         fi
-        echo "$o" >> "${PARAMETERS[filename]}"
+        echo "$o" >> "${PARAMETERS[filename]}" # OPEN
     done
+
+    if [[ ${OPTIONS[debug]} == true ]];then
+        debug "Status: Support"
+    fi
+    for s in "${SUPPORT[@]}"; do
+        if [[ ${OPTIONS[debug]} == true ]];then
+            debug "   $s"
+        fi
+        echo "$s" >> "${PARAMETERS[filename]}" # SUPPORT
+    done
+
     if [[ ${OPTIONS[debug]} == true ]];then
         debug "Status: Declined"
     fi
@@ -593,8 +615,9 @@ function sort {
         if [[ ${OPTIONS[debug]} == true ]];then
             debug "   $d"
         fi
-        echo "$d" >> "${PARAMETERS[filename]}"
+        echo "$d" >> "${PARAMETERS[filename]}"  # DECLINED
     done
+    # END: walk through TICKETLIST and echo to file
     echo "Done sorting"
 
 }

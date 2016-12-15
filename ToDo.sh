@@ -3,7 +3,7 @@
 # @name ToDo
 # @description Commandline ToDo Tool
 # @author Ralph Dittrich <kizetsu.rd@googlemail.com>
-# @version v0.1.2.34
+# @version v0.1.2.35
 #
 # @Todo:
 #   add possibility to get lists by id (maybe own folder for all lists)
@@ -13,7 +13,7 @@
 #   -> maybe we want to sort by customer or numerical by ticketnumber
 #   we cannot use getopts, so maybe an own function should support short parameters/opts with value
 #   
-VERSION='v0.1.2.34'
+VERSION='v0.1.2.35'
 REPOSITORY='https://github.com/kizetsu/todo-command'
 VERSIONFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/version.md'
 COREFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/ToDo.sh'
@@ -625,7 +625,6 @@ function sort {
 function register {
     if [ -f '/bin/todo.sh' ]; then
         # we do not want to let the user register multiple times
-        # later an update command may come
         echo "[ToDo List Tool] is already registered"
         echo "    For more information type: Todo help"
         return 0
@@ -688,7 +687,8 @@ function update {
         echo 'use "./ToDo.sh register" to register [ToDo List Tool] as bash command'
         return 1
     else
-        echo "checking for version..."
+        echo "checking for versions..."
+        echo "installed version: ${VERSION}"
         # check if wget or curl is installed and get version file
         # we prefer wget
         command -v wget > /dev/null 2>&1
@@ -698,10 +698,10 @@ function update {
         cd /tmp/
         if [ $chkwget -eq 0 ]; then
             # use wget
-            command wget -O todo.version "$VERSIONFILE"
+            command wget -O todo.version "$VERSIONFILE" > /dev/null 2>&1
         elif [ $chkcurl -eq 0 ]; then
             # use curl
-            command curl -o todo.version "$VERSIONFILE"
+            command curl -o todo.version "$VERSIONFILE" > /dev/null 2>&1
         else
             # manually check for version is required
             echo "could not get version from repository"
@@ -724,6 +724,8 @@ function update {
             break
         done < '/tmp/todo.version'
         command rm '/tmp/todo.version'
+        echo "latest version: ${REMOTEVERSION}"
+        echo ""
 
         # convert string to int
         # VAR="${VAR/v/}"
@@ -741,10 +743,10 @@ function update {
             echo ""
             if [ $chkwget -eq 0 ]; then
                 # use wget
-                command wget -O ToDo.sh "$COREFILE"
+                command wget -O ToDo.sh "$COREFILE" > /dev/null 2>&1
             elif [ $chkcurl -eq 0 ]; then
                 # use curl
-                command curl -o ToDo.sh "$COREFILE"
+                command curl -o ToDo.sh "$COREFILE" > /dev/null 2>&1
             fi
         else
             echo -e "\\033[0;32m[ToDo List Tool] is already the latest version\\033[0m"

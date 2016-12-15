@@ -3,7 +3,7 @@
 # @name ToDo
 # @description Commandline ToDo Tool
 # @author Ralph Dittrich <kizetsu.rd@googlemail.com>
-# @version v0.1.2.35
+# @version v0.1.2.36
 #
 # @Todo:
 #   add possibility to get lists by id (maybe own folder for all lists)
@@ -13,7 +13,7 @@
 #   -> maybe we want to sort by customer or numerical by ticketnumber
 #   we cannot use getopts, so maybe an own function should support short parameters/opts with value
 #   
-VERSION='v0.1.2.35'
+VERSION='v0.1.2.36'
 REPOSITORY='https://github.com/kizetsu/todo-command'
 VERSIONFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/version.md'
 COREFILE='https://raw.githubusercontent.com/kizetsu/todo-command/master/ToDo.sh'
@@ -710,7 +710,7 @@ function update {
         fi
 
         #check if file could be downloaded
-        if [ ! -f '/tmp/todo.version']; then
+        if [ ! -f '/tmp/todo.version' ]; then
             # manually check for version is required
             echo "could not get version from repository"
             echo "please manually check it at: ${REPOSITORY}"
